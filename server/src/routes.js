@@ -32,5 +32,12 @@ module.exports = function() {
         res.send('Movie added successfully');
     })
 
+    router.delete('/deleteMovie/:searchValue', async (req, res) => {
+        const { searchValue } = req.params;
+        const detail = await Movie.remove({ title : searchValue });
+
+        res.send('Movie Deleted successfully');
+    })
+
     return router;
 }

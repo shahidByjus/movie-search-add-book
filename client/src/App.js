@@ -13,6 +13,7 @@ import {
   CardImg
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import Axios from "axios";
 
 export default function App() {
   const [data, setData] = useState([]);
@@ -20,6 +21,10 @@ export default function App() {
 
   function onClickSearch() {
     fetchMovies();
+  }
+
+  function onClickDelete() {
+    deleteMovie();
   }
 
   function onKeyPressSearchValue(event) {
@@ -41,12 +46,20 @@ export default function App() {
       .catch((error) => console.log("error", error));
   }
 
+  function deleteMovie() {
+    Axios.delete(`http://localhost:5000/deleteMovie/${searchValue}`)
+    .then((result) => {
+      console.log(result.data);
+      alert('Movie Deleted Successfully');
+    })
+  }
+
   return (
     <Container style={{ marginTop: "60px" }}>
       <section className="search-section">
         <InputGroup>
           <Input
-            placeholder=" Search movie name..."
+            placeholder="Enter movie name to Search or Delete"
             onChange={onChangeSearchValue}
             onKeyPress={onKeyPressSearchValue}
           />
@@ -59,6 +72,9 @@ export default function App() {
           >
             Add Movie
           </Link>
+          <Button color="danger" onClick={onClickDelete}>
+            Delete
+          </Button>
         </InputGroup>
       </section>
       <br />
