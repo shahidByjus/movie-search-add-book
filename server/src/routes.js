@@ -11,6 +11,13 @@ module.exports = function() {
         return res.send(movieData);
     });
 
+    router.get('/getUpdateMovie/:searchValue', async (req, res) => {
+        const { searchValue } = req.params;
+        const movieData = await Movie.find({imdbId : searchValue});
+
+        return res.send(movieData);
+    });
+
     router.get('/detail/:searchValue', async (req, res) => {
         const { searchValue } = req.params;
         const detail = await Movie.find({imdbId : searchValue});
@@ -29,15 +36,30 @@ module.exports = function() {
             poster
         });
         await movie.save();
+
         res.send('Movie added successfully');
-    })
+    });
+
+    router.put('/updateMovie', async (req,res) => {
+        const {title, year, imdbId, type, poster} = req.body;
+
+        const updatedData = await Movie.updateOne({imdbId : imdbId},{$set:{
+            title : title,
+            year : year,
+            type : type,
+            poster : poster
+        }});
+
+        res.send(updatedData);
+    });
 
     router.delete('/deleteMovie/:searchValue', async (req, res) => {
         const { searchValue } = req.params;
-        const detail = await Movie.remove({ title : searchValue });
+
+        const detail = await Movie.remove({ imdbId : searchValue });
 
         res.send('Movie Deleted successfully');
-    })
+     });
 
     return router;
 }

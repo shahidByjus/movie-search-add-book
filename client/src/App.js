@@ -23,10 +23,6 @@ export default function App() {
     fetchMovies();
   }
 
-  function onClickDelete() {
-    deleteMovie();
-  }
-
   function onKeyPressSearchValue(event) {
     if (event.charCode === 13) {
       fetchMovies();
@@ -46,12 +42,17 @@ export default function App() {
       .catch((error) => console.log("error", error));
   }
 
-  function deleteMovie() {
-    Axios.delete(`http://localhost:5000/deleteMovie/${searchValue}`)
-    .then((result) => {
-      console.log(result.data);
-      alert('Movie Deleted Successfully');
-    })
+  function onClickDelete(imdbId) {
+    let result = global.confirm("Are you sure to delete");
+   
+    if(result)
+    {
+      Axios.delete(`http://localhost:5000/deleteMovie/${imdbId}`)
+      .then((result) => {
+        console.log(result.data);
+        alert('Movie Deleted Successfully');
+      });
+    }
   }
 
   return (
@@ -59,7 +60,7 @@ export default function App() {
       <section className="search-section">
         <InputGroup>
           <Input
-            placeholder="Enter movie name to Search or Delete"
+            placeholder="Enter movie name to Search"
             onChange={onChangeSearchValue}
             onKeyPress={onKeyPressSearchValue}
           />
@@ -72,9 +73,6 @@ export default function App() {
           >
             Add Movie
           </Link>
-          <Button color="danger" onClick={onClickDelete}>
-            Delete
-          </Button>
         </InputGroup>
       </section>
       <br />
@@ -99,6 +97,15 @@ export default function App() {
                       >
                         Detail
                       </Link>
+                      <Link
+                        to={`/updateMovie/${movie.imdbId}`}
+                        className="btn btn-warning"
+                      >
+                        Update
+                      </Link>
+                      <Button color="danger" onClick={() => onClickDelete(`${movie.imdbId}`)}>
+                        Delete
+                      </Button>
                     </CardBody>
                   </Card>
                 </Col>

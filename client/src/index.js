@@ -8,6 +8,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import App from "./App";
 import Detail from "./components/Detail";
 import AddMovie from "./components/AddMovie";
+import UpdateMovie from "./components/UpdateMovie";
 
 const history = createBrowserHistory();
 
@@ -24,6 +25,9 @@ ReactDOM.render(
         </Route>
         <Route path="/addMovie">
           <AddMovie />
+        </Route>
+        <Route path="/updateMovie/:movieId">
+          <UpdateMovie />
         </Route>
       </Switch>
     </Router>
